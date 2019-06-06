@@ -2,122 +2,193 @@
 # Turma: Sexta Feira.
 # Sexta Sala: 601.
 
+#imports
+import sys
+
 # LISTAS
-preco_unitário = 0
 listaDeProdutos = []
 listaDeQuantidades = []
 listaDePrecos = []
 no_carrinho = []
 
 # VARIAVEIS
-produto = " "
+produto, num, texto = " ", " ",""
 escolha2,escolha3 = 0, 0
+preco, resultado = 0.0,  0.0
 
-st   = "\n---------------------------------------------------------";
-st += "\n                 MENU";
-st += "\n---------------------------------------------------------";
-st += "\n0- Fim";
-st += "\n1- Cadastra Produtos";
-st += "\n2- Confere Lista de Produtos";
-st += "\n3- Confirma Produto";
-st += "\n4- Mostra Total a pagar";
-st += "\n---------------------------------------------------------";
-st += "\nEscolha uma opção: ";
-print()
+## Função para ler um inteiro #######################################################################
 
-while True:
-    escolha = input(st)
+def lerInteiro(mens): 
+    while True:
+        try:
+            n = int(input(mens))            
+            return n
+        except:
+            input("...Erro. Você não digitou um número inteiro.")
+            
+## Função para ler um Texto #######################################################################
+            
+def lerstring(mensS):
+    while True:
+        try:
+            n = str(input(mensS))
+            return n
+        except:
+            input("...Erro. Você não digitou letras.")
+            
+## Função para ler um float (Preço) ###################################################################            
+def lerfloat(mensS):
+    while True:
+        try:
+            n = float(input(mensS))
+            return n
+        except:
+            input("...Erro. Você não digitou um número quebrado EX: 2.50.")
+            
+## Função para mostrar a lista #######################################################################
+            
+def mostraLista(listaDeProdutos):
+    ind = 0
+    for x in range(len(listaDeProdutos)):
+        print(ind," - [ Produto: ",listaDeProdutos[x]," - Quantidade:",listaDeQuantidades[x]," - Preço: R$ ",listaDePrecos[x]," ] - ",no_carrinho[x])
+        ind += 1
+    print("---------------------------------------------------------------------------------------------------")
+
+## Função para mostrar o menu #######################
+def mostraMenu(st):
+    st   = "\n-----------------------------------------------------------";
+    st += "\n|                   MENU                           |";
+    st += "\n|---------------------------------------------------------|";
+    st += "\n| 0- Fim                                             |";
+    st += "\n| 1- Cadastra Produtos                  |";
+    st += "\n| 2- Confere Lista de Produtos     |";
+    st += "\n| 3- Confirma Produto                    |";
+    st += "\n| 4- Mostra Total a pagar              |";
+    st += "\n----------------------------------------------------------";
+    print(st)
+    
+## Função para fazer a escolha no menu ###############################################################
+    
+def menu(escolha):
+    if escolha == '0' :
+        print()
+        print("Ate logo!")
+        sys.exit()
+        
     if escolha == '1':
-        print("Lista de produtos")
+        print()
+        print("------ Cadastro de produtos ------")
         while True:
-            produto = input("\n[Enter volta ao menu]\n...Digite o produto: ")
-            quantidade = input("\n[Enter volta ao menu]\n...Digite a quantidade: ")
-            if len(produto) == 0:
+            produto       = lerstring("\n[Aperte ENTER para voltar ao menu]\nDigite o nome produto: ")
+            if produto == "":
                 break
+
+            quantidade = lerInteiro("\n[Digite 0 e aperte ENTER para voltar ao menu]\nDigite a quantidade: ")
+            if quantidade == 0:
+                break
+            
             listaDeProdutos.append(produto)
             listaDeQuantidades.append(int(quantidade))
             no_carrinho.append(str("---"))
-            #listaDeProdutos = listaDeProdutos.append(produto)
-
+            listaDePrecos.append(float(preco))
+            #listaDeProdutos = listaDeProdutos.append(produto) #lista dentro de lista
+            
+    ###############################################################################################
+            
     if escolha == '2':
-        
+        print()
         ind = 0
         print("Deseja Adicionar algum produto no CARRINHO ?")        
-        escolha2 = int(input("1 - Adicionar no carrinho // 2 - Ver a lista: "))
-        print("---------------------------------------------------------------------------------------------------")
+        escolha2 = lerInteiro("1 - Adicionar no carrinho // 2 - Ver a lista: ")
+        print() 
         if escolha2 == 1:
-            for elemento in listaDeProdutos:
-                print(ind," - [ Produto: "+str(elemento)+" - quantidade",listaDeQuantidades[ind]," ] - ",no_carrinho[ind])
-                ind += 1
+            print("---------------------------------------------------------------------------------------------------")
+            mostraLista(listaDeProdutos)
             print()    
-            escolha3 = int(input("Qual numero do produto que deseja adicionar: "))
+            escolha3 = lerInteiro("Qual numero do produto que deseja adicionar: ")
+            
             for x in range(len(listaDeProdutos)):
                 if escolha3 == x:
                     no_carrinho[x] = "OK"
                     
-            print("---------------------------------------------------------------------------------------------------")
-            for x in range(len(listaDeProdutos)):
-                print(ind," - [ Produto: ",listaDeProdutos[x]," - quantidade",listaDeQuantidades[x]," ] - ",no_carrinho[x])
-                
+            print()                    
+            print("------ lista de produtos atualizada -----------------------------------------")
+            mostraLista(listaDeProdutos)
+
         elif escolha2 == 2:
-            for elemento in listaDeProdutos:
-                print(ind," - [ Produto: "+str(elemento)+" - quantidade",listaDeQuantidades[ind]," ] - ",no_carrinho[ind])
-                ind += 1      
-
+            print("---------------------------------------------------------------------------------------------------")
+            mostraLista(listaDeProdutos)
+            
+    ###############################################################################################
+            
     if escolha == '3':
-        soma = 0
-        for e in listaDeProdutos:
-            soma += e
-        print("Soma: ",soma)
+        print()
+        print("---------------------------------------------------------------------------------------------------")
+        ind = 0
+        for x in range(len(listaDeProdutos)):
+            if no_carrinho[x] == "OK":
+                print(ind," - [ Produto: ",listaDeProdutos[x]," - Quantidade:",listaDeQuantidades[x]," - Preço: R$ ",listaDePrecos[x]," ] - ",no_carrinho[x])
+            ind += 1
+        print("---------------------------------------------------------------------------------------------------")
+        print() 
         
-        print("Soma: ",sum(listaDeProdutos))
-
-    if escolha == '4':
-        if len(listaDeProdutos) > 0:
-            print("Média calculada: ",sum(listaDeProdutos)/len(listaDeProdutos))
-
-    if escolha == '5':
-        for e in listaDeProdutos:
-            if e%2 == 0:
-                print("[",e,"]")
-                
-    if escolha == '6':
-        for i in range(0,len(listaDeProdutos),1):
-            if i%2 == 0:
-                print(i,"-",listaDeProdutos[i])
         
-        for i in range(0,len(listaDeProdutos),2):
-            print(i,"-",listaDeProdutos[i])
-
-
-    if escolha == '7':
-        outraLista = []
-        for e in listaDeProdutos:
-            if e%2 == 1:
-                outraLista.append(e)
-
-    if escolha == '8':
         while True:
-            try:
-                num = int(input("Digite o número para localizar: "))
+            escolha3 = lerInteiro("Qual produto que deseja adicionar o preço: ")
+            for x in range(len(listaDeProdutos)):
+                if no_carrinho[x] == "OK":
+                    if no_carrinho[escolha3] == "OK":
+                        for x in range(len(listaDeProdutos)):
+                            if escolha3 == x:
+                                listaDePrecos[x] = lerfloat("Digite o preço do produto: ")
+                        print("Preço Adicionado")
+                        
+                    else:
+                        print("Esse produto não esta no carrinho!")            
+            if no_carrinho[escolha3] == "OK":
                 break
-            except:
-                print("ERRO.")
+        print()                    
+        print("------ lista de produtos atualizada -----------------------------------------")
+        mostraLista(listaDeProdutos)
+                
+    ###############################################################################################
+                
+    if escolha == '4':
+        print()
+        print("--- Itens que vão ser comprados -----------------------------------------")
+        ind = 0
+        for x in range(len(listaDeProdutos)):
+            if no_carrinho[x] == "OK":
+                print(ind," - [ Produto: ",listaDeProdutos[x]," - Quantidade:",listaDeQuantidades[x]," - Preço: R$ ",listaDePrecos[x]," ] - ",no_carrinho[x])
+            ind += 1
+        print("---------------------------------------------------------------------------------------------------")
+        print()
 
-        for i in range(len(listaDeProdutos)):
-            if listaDeProdutos[i] == num:
-                print("O número: ",num,"está na posição,",i,"da lista")
+        print("--- Itens que não vão ser comprados ----------------------------------")
+        ind, cont = 0, 0
+        for x in range(len(listaDeProdutos)):
+            if no_carrinho[x] != "OK":
+                print(ind," - [ Produto: ",listaDeProdutos[x]," - Quantidade:",listaDeQuantidades[x]," - Preço: R$ ",listaDePrecos[x]," ] - ",no_carrinho[x])
+            ind += 1
+        print("---------------------------------------------------------------------------------------------------")
+        print() 
+        resultado = 0
+        for x in range(len(listaDeProdutos)):        
+            if no_carrinho[x] == "OK":
+                cont += 1
+                resultado = (resultado + (listaDeQuantidades[x]*listaDePrecos[x]))
+        if cont == 1:
+            print("Você vai gastar: R$",resultado,"\nPara comprar esse prrodutos")
+            sys.exit()
+        else:
+            print("Você vai gastar: R$",resultado,"\nPara comprar esses ",cont," prrodutos")
+            sys.exit()
+                    
+### EXECUÇÂO ####################################################################################
+        
+while True:
+    mostraMenu(texto)
+       
+    menu(lerstring("Escolha uma opção: "))
 
-    if escolha == '9':
-        while True:
-            try:
-                ind = int(input("Digite o indice para localizar: "))
-                if ind >= 0 and ind < len(listaDeProdutos):
-                    break
-            except:
-                print("ERRO.")
-
-        print("O indice: ",ind,"corresponde ao número",listaDeProdutos[ind])
-
-
-
+   
