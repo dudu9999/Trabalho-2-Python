@@ -13,7 +13,7 @@ no_carrinho = []
 
 # VARIAVEIS
 produto, num, texto = " ", " ",""
-escolha2,escolha3 = 0, 0
+escolha2, escolha3, escolha4 = 0, 0, 0
 preco, resultado = 0.0,  0.0
 
 ## Função para ler um inteiro #######################################################################
@@ -96,60 +96,82 @@ def menu(escolha):
     ###############################################################################################
             
     if escolha == '2':
-        print()
-        ind = 0
-        print("Deseja Adicionar algum produto no CARRINHO ?")        
-        escolha2 = lerInteiro("1 - Adicionar no carrinho // 2 - Ver a lista: ")
-        print() 
-        if escolha2 == 1:
-            print("---------------------------------------------------------------------------------------------------")
-            mostraLista(listaDeProdutos)
-            print()    
-            escolha3 = lerInteiro("Qual numero do produto que deseja adicionar: ")
+        while True:
+            if len(listaDeProdutos) == 0:
+                print("Lista VAZIA!")
+                break
             
-            for x in range(len(listaDeProdutos)):
-                if escolha3 == x:
-                    no_carrinho[x] = "OK"
-                    
-            print()                    
-            print("------ lista de produtos atualizada -----------------------------------------")
-            mostraLista(listaDeProdutos)
+            print()
+            ind = 0        
+            escolha2 = lerInteiro("Deseja Adicionar algum produto no CARRINHO ?\n1 - Adicionar no carrinho\n2 - Ver a lista e voltar para o menu: ")
+            print() 
+            if escolha2 == 1:
+                print("---------------------------------------------------------------------------------------------------")
+                mostraLista(listaDeProdutos)
+                print()    
+                escolha3 = lerInteiro("Qual numero do produto que deseja adicionar: ")
+                
+                for x in range(len(listaDeProdutos)):
+                    if escolha3 == x:
+                        no_carrinho[x] = "OK"
+                        
+                print()                    
+                print("------ lista de produtos atualizada -----------------------------------------")
+                mostraLista(listaDeProdutos)
+                break
 
-        elif escolha2 == 2:
-            print("---------------------------------------------------------------------------------------------------")
-            mostraLista(listaDeProdutos)
-            
+            elif escolha2 == 2:
+                print("---------------------------------------------------------------------------------------------------")
+                mostraLista(listaDeProdutos)
+                break
+                
     ###############################################################################################
             
     if escolha == '3':
-        print()
-        print("---------------------------------------------------------------------------------------------------")
-        ind = 0
-        for x in range(len(listaDeProdutos)):
-            if no_carrinho[x] == "OK":
-                print(ind," - [ Produto: ",listaDeProdutos[x]," - Quantidade:",listaDeQuantidades[x]," - Preço: R$ ",listaDePrecos[x]," ] - ",no_carrinho[x])
-            ind += 1
-        print("---------------------------------------------------------------------------------------------------")
-        print() 
-        
-        
         while True:
-            escolha3 = lerInteiro("Qual produto que deseja adicionar o preço: ")
+            if len(listaDeProdutos) == 0:
+                print("Lista VAZIA!")
+                break
+            contador = 0
+            for x in range(len(listaDeProdutos)):
+                if no_carrinho[x] == "---":
+                    contador += 1
+            if contador == len(listaDeProdutos):
+                print("Lista VAZIA!")
+                break
+            
+            print()
+            print("---------------------------------------------------------------------------------------------------")
+            ind = 0
             for x in range(len(listaDeProdutos)):
                 if no_carrinho[x] == "OK":
-                    if no_carrinho[escolha3] == "OK":
-                        for x in range(len(listaDeProdutos)):
-                            if escolha3 == x:
-                                listaDePrecos[x] = lerfloat("Digite o preço do produto: ")
-                        print("Preço Adicionado")
-                        
-                    else:
-                        print("Esse produto não esta no carrinho!")            
-            if no_carrinho[escolha3] == "OK":
+                    print(ind," - [ Produto: ",listaDeProdutos[x]," - Quantidade:",listaDeQuantidades[x]," - Preço: R$ ",listaDePrecos[x]," ] - ",no_carrinho[x])
+                              
+                ind += 1
+            print("---------------------------------------------------------------------------------------------------")
+            print()
+        
+            escolha3 = lerInteiro("Qual produto que deseja adicionar o preço: ")
+            if escolha3 > (len(listaDeProdutos)-1):
+                print("Numero maior que o que consta na lista")
                 break
-        print()                    
-        print("------ lista de produtos atualizada -----------------------------------------")
-        mostraLista(listaDeProdutos)
+                
+            for x in range(len(listaDeProdutos)):
+                if no_carrinho[escolha3] == "OK":
+                    for x in range(len(listaDeProdutos)):
+                        if escolha3 == x:
+                            listaDePrecos[x] = lerfloat("Digite o preço do produto: ")
+                    print("Preço Adicionado")
+                    break    
+                else:
+                    print("Esse produto não esta no carrinho!")
+
+            print()                    
+            print("------ lista de produtos atualizada -----------------------------------------")
+            mostraLista(listaDeProdutos)
+            break   
+                
+                
                 
     ###############################################################################################
                 
